@@ -40,22 +40,22 @@ class _CrossRoads extends State {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          body: TabBarView(children: [RoadSignsStateful(),
-            Icon(Icons.chat_bubble_outline),Icon(Icons.chat_bubble_outline)]),
+
+          body: TabBarView(children: [
+            RoadSignsStateful(),
+            Icon(Icons.chat_bubble_outline),Icon(Icons.chat_bubble_outline)
+          ],),
           appBar: AppBar(
-            bottom:
-            TabBar(tabs: [Tab(icon: Icon(tab_choices[0].icon),text: tab_choices[0].title),
-              Tab(icon: Icon(tab_choices[1].icon),text: tab_choices[1].title,)
-              ,Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,)],controller:null
-              ,labelColor: Colors.amber,indicatorSize:TabBarIndicatorSize.tab,
-            labelStyle: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white) ,),
+            backgroundColor: Colors.blueGrey,
+            bottom: mainTab(),
             actions: <Widget>[
-              PopupMenuButton<Choice>( icon: Icon(Icons.menu),
-                onSelected:_select,
-                itemBuilder:(BuildContext context) {
-                 return menuItems_choices.skip(2).map((e) => PopupMenuItem<Choice>(child:Text(e.title),)).toList();
-                },
-              )
+          PopupMenuButton<Choice>( icon: Icon(Icons.menu),
+          onSelected:_select,
+          itemBuilder:(BuildContext context) {
+            return menuItems_choices.skip(2).map((e) =>
+                PopupMenuItem<Choice>(child:Text(e.title),)).toList();
+          },
+        )
             ],
             title: Text(getTitle()),
             leading: Icon(menuItems_choices[1].icon),
@@ -68,7 +68,18 @@ class _CrossRoads extends State {
     );
     
   }
+
+  mainTab(){
+    return TabBar(tabs: [
+      Tab(icon: Icon(tab_choices[0].icon),text: tab_choices[0].title),
+      Tab(icon: Icon(tab_choices[1].icon),text: tab_choices[1].title,)
+      ,Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,)],controller:null
+      ,labelColor: Colors.amber,indicatorSize:TabBarIndicatorSize.tab,
+      labelStyle: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white),);
+  }
 }
+
+
 class Choice {
  
 
@@ -94,39 +105,7 @@ const List<Choice> tab_choices = const <Choice>[
   const Choice(title: "Final Test",icon: Icons.rate_review,size: 15),
   const Choice(title: "Theory",icon: Icons.book,size: 15),
 ];
-const List<Choice> traffic_sign = const <Choice>[
-  const Choice(title: "Warning Signs",icon: Icons.directions,size: 15),
-  const Choice(title: "Give Way Signs",icon: Icons.rate_review,size: 15),
-  const Choice(title: "Prohibitory Signs",icon: Icons.book,size: 15),
-  const Choice(title: "Speed Limits",icon: Icons.directions,size: 15),
-  const Choice(title: "Mandatory Signs",icon: Icons.rate_review,size: 15),
-  const Choice(title: "Introduction Signs",icon: Icons.book,size: 15),
-  const Choice(title: "Instruction Signs",icon: Icons.directions,size: 15),
-  const Choice(title: "Information Signs",icon: Icons.rate_review,size: 15),
 
-];
-const List<Choice> traffic_sign_supplementary = const <Choice>[
-  const Choice(title: "Symbols",icon: Icons.directions,size: 15),
-  const Choice(title: "Supplementary Plates",icon: Icons.rate_review,size: 15),
-  const Choice(title: " Traffic with Supplementary Plates",icon: Icons.book,size: 15),
-
-];
-const List<Choice> safe_traffic_environments = const <Choice>[
-  const Choice(title: "Instructions",icon: Icons.directions,size: 15),
-  const Choice(title: "Traffic Officers",icon: Icons.rate_review,size: 15),
-  const Choice(title: "Police Officers",icon: Icons.book,size: 15),
-  const Choice(title: "Transport Officers",icon: Icons.book,size: 15),
-  const Choice(title: "Traffic Lights",icon: Icons.book,size: 15),
-  const Choice(title: "Level Crossing",icon: Icons.book,size: 15),
-
-];
-const List<Choice> road_markings = const <Choice>[
-  const Choice(title: "Road Markings",icon: Icons.directions,size: 15),
-  const Choice(title: "Central Barrier",icon: Icons.rate_review,size: 15),
-  const Choice(title: "Delineator Post",icon: Icons.book,size: 15),
-
-
-];
 class ChoiceCard extends StatelessWidget {
   const ChoiceCard({Key key, this.choice}) : super(key: key);
   final Choice choice;
@@ -147,6 +126,7 @@ class ChoiceCard extends StatelessWidget {
         padding: const EdgeInsets.all(2),
         child:Card(color: Colors.blueAccent,shadowColor: Colors.grey,child: Text("Road"),),
         color: Colors.white,
+
 
       )
     ],
