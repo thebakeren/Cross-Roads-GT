@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 
 // This app is a stateful, it tracks the user's current choice.
 /*
@@ -123,7 +124,8 @@ class ChoiceCard extends StatelessWidget {
     );
   }
 }
-*/class MyTabbedPage extends StatefulWidget {
+*/
+class MyTabbedPage extends StatefulWidget {
   const MyTabbedPage({Key key}) : super(key: key);
   @override
   _MyTabbedPageState createState() => new _MyTabbedPageState();
@@ -132,7 +134,9 @@ class ChoiceCard extends StatelessWidget {
 class _MyTabbedPageState extends State<MyTabbedPage>
     with TickerProviderStateMixin {
 
-  var _wizard, _wizard_buttom;
+  var _wizard;
+  final _biggerFont= const TextStyle(fontSize: 14.99,fontWeight: FontWeight.bold,color: Colors.blue);
+
   final List<Tab> _tabsBottom = <Tab>[
     Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,),
     Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,),
@@ -154,39 +158,64 @@ class _MyTabbedPageState extends State<MyTabbedPage>
     return _title;
   }
   TabController _tabController;
-  TabController _tabControllerBottom;
+  TabController _tabControllerSigns;
 
+ Widget trafficItems(var choice){
+      Symbols().execImg();
+      return new ListTile(onTap: (){
+      setState(() {
+
+      _wizard = new Container(child: new ListView.builder(itemBuilder:(context, index) {
+
+        final _suggestion=<Symbols>[_symbols[index]];
+         return _roadSigns(_suggestion[0]);
+      },itemCount: _symbols.length,),);
+
+      });
+
+
+      },leading: Icon(choice.icon),isThreeLine: true,
+        subtitle: Text(choice.info,style: TextStyle(color: Colors.blueGrey),),title: Text(
+            choice.title,
+            style: _biggerFont,
+          )
+        );
+
+
+  }
+  Widget _roadSigns(Symbols symbols){
+
+    return new ListTile(onTap: (){
+      setState(() {
+
+        _wizard = new Container(child: new ListView.builder(itemBuilder:(context, index) {
+          final _suggestion=<Symbols>[_symbols[index]];
+          return _roadSigns(_suggestion[0]);
+        },itemCount: _symbols.length,),);
+      });
+
+
+    },leading: Image(image:symbols.icon.image,),isThreeLine: true,
+        subtitle: Text(symbols.info,style: TextStyle(color: Colors.blueGrey),),title: Text(
+          symbols.title,
+          style: _biggerFont,
+        )
+   );
+
+  }
   @override
   void initState() {
     super.initState();
 
-    print("hello");
     _tabController = new TabController(vsync: this, length: _tabs.length);
-    _tabControllerBottom = new TabController(vsync: this, length: _tabsBottom.length);
-    _wizard_buttom=
-    new TabBarView(
-      controller: _tabControllerBottom,
-      children: <Widget>[new ListView(children: <Widget>[
-        new ListTile(title: Text("Late"),onTap: (){
-          setState(() {
-            _wizard = new Icon(Icons.print);
-          });
 
 
-        },)
-      ],),Icon(Icons.radio),Icon(Icons.radio)],
-    );
     _wizard=new TabBarView(
       controller: _tabController,
-      children: <Widget>[new ListView(children: <Widget>[
-        new ListTile(title: Text("Late"),onTap: (){
-          setState(() {
-            _wizard = new Icon(Icons.print);
-          });
-
-
-        },)
-      ],),Icon(Icons.radio),Icon(Icons.radio)],
+      children: <Widget>[new ListView.builder(itemBuilder:(context, index) {
+        final _suggestion=<Choice>[traffic_sign[index]];
+        return trafficItems(_suggestion[0]);
+      },itemCount: traffic_sign.length,padding: const EdgeInsets.all(4),),Icon(Icons.radio),Icon(Icons.radio)],
     );
   }
 
@@ -195,39 +224,12 @@ class _MyTabbedPageState extends State<MyTabbedPage>
     _tabController.dispose();
     super.dispose();
   }
+  @override
 
   @override
   Widget build(BuildContext context) {
-    _tabController.addListener(() {
-
-      setState(() {
-      _wizard_buttom=  new TabBarView(
-          controller: _tabControllerBottom,
-          children: <Widget>[new ListView(children: <Widget>[
-            new ListTile(title: Text("Late"),onTap: (){
-              setState(() {
-                _wizard = new Icon(Icons.print);
-              });
 
 
-            },)
-          ],),Icon(Icons.radio),Icon(Icons.radio)],
-        );
-        _wizard=new TabBarView(
-          controller: _tabController,
-          children: <Widget>[new ListView(children: <Widget>[
-            new ListTile(title: Text("Late"),onTap: (){
-              setState(() {
-                _wizard = new Icon(Icons.print);
-              });
-
-
-            },)
-          ],),Icon(Icons.radio),Icon(Icons.radio)],
-        );
-      });
-
-    });
     return
       MaterialApp(
       home: new Scaffold(
@@ -245,29 +247,103 @@ class _MyTabbedPageState extends State<MyTabbedPage>
         title: Text(_title),
         leading: Icon(menuItems_choices[1].icon),
         bottom:new TabBar(
+
           controller: _tabController,
           tabs: _tabs,labelColor: Colors.amber,indicatorSize:TabBarIndicatorSize.tab,
-            labelStyle: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white)
+            labelStyle: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white),onTap: (value) {
+          setState(() {
+
+
+            _wizard=new TabBarView(
+              controller: _tabController,
+              children: <Widget>[new ListView.builder(itemBuilder:(context, index) {
+                final _suggestion=<Choice>[traffic_sign[index]];
+                return trafficItems(_suggestion[0]);
+              },itemCount: traffic_sign.length,padding: const EdgeInsets.all(4),),Icon(Icons.radio),Icon(Icons.radio)],
+            );
+
+          });
+            },
     ),
 
         ) ,
-      body: new Container(child:_wizard ,),persistentFooterButtons: <Widget>[Container(child:IconButton(onPressed: () {  },icon: Icon(Icons.comment,color: Colors.blueGrey,),),height: 30),
+      body: new Container(child:_wizard,),persistentFooterButtons: <Widget>[Container(child:IconButton(onPressed: () {  },icon: Icon(Icons.comment,color: Colors.blueGrey,),),height: 30),
     Container(child:IconButton(onPressed: () {  } ,icon: Icon(Icons.turned_in,color: Colors.blueGrey,),),height: 30,)],
     ));
   }
 }
-//new Container(child: new TabBar(tabs: _tabsBottom,controller: _tabControllerBottom,labelColor: Colors.amber,indicatorSize:TabBarIndicatorSize.tab,
-//          labelStyle: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white),),color: Colors.blueGrey,)
 
 class Choice {
 
 
-  const Choice({this.title, this.icon,this.size});
+  const Choice({this.title, this.icon,this.size,this.info});
   final double size;
-  final String title;
+  final String title,info;
   final IconData icon;
 }
+class Symbols {
 
+
+  const Symbols({this.title, this.icon,this.size,this.info});
+  final double size;
+  final String title,info;
+  final Image icon;
+
+
+  execImg(){
+
+    for(int x=0;x<30;x++) {
+      const url=AssetImage("road/roadsigns/asset $x.png");
+      _symbols = const <Symbols>[
+        const Symbols(title: "Warning Signs",
+            icon: Image(image:url,
+              color: null,
+              width: 10,
+              height: 10,),
+            size: 50,
+            info: "Warning signs are erected to warn road users of hazard"),
+        const Symbols(title: "Give Way Signs",
+            icon: Image(image: AssetImage("road/roadsigns/asset 1.png"),
+              color: null,
+              width: 10,
+              height: 10,),
+            size: 50,
+            info: "Give way signs are erected to warn road users of hazard"),
+
+      ];
+    }
+  }
+}
+ List<Symbols> _symbols=<Symbols>[];
+
+
+const List<Choice> traffic_sign = const <Choice>[
+  const Choice(title: "Warning Signs",icon: Icons.warning,size: 50,
+      info:"Warning signs are erected to warn road users of hazard"),
+  const Choice(title: "Give Way Signs",icon: Icons.change_history,size: 50,
+      info: "Give way signs are erected to warn road users of hazard"),
+  const Choice(title: "Prohibitory Signs",icon: Icons.not_interested,size: 50,
+      info: "Prohibitory signs apply from the point where the sign is erected"),
+  const Choice(title: "Speed Limits",icon: Icons.looks_6,size: 50,info: "Speed limit indicate the maximum "
+      "permitted speed limit one is allowed to drive and apply to a point where another speed limit is erected"),
+  const Choice(title: "Mandatory Signs",icon: Icons.directions_walk,size: 50,info: "Mandatory signs indicating that a particular"
+      " kind of traffic is mandatory or prohibited"),
+  const Choice(title: "Direction Signs",icon: Icons.directions,size: 50,info: "Direction signs point a road user to a certain location"),
+  const Choice(title: "Instruction Signs",icon: Icons.call_merge,size: 50,info: "Instruction Signs tell a road user about a certain circumstance that apply at a place"),
+  const Choice(title: "Information Signs",icon: Icons.landscape,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Symbols",icon: Icons.directions_bus,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Supplementary Plates",icon: Icons.timer_10,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Traffic signs with Supplementary Plates",icon: Icons.traffic,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Traffic Officers",icon: Icons.pan_tool,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Police Officers",icon: Icons.local_car_wash,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Transport Officers",icon: Icons.person,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Traffic Lights",icon: Icons.traffic,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Level Crossing",icon: Icons.tram,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Road Markings",icon: Icons.straighten,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Central Barrier",icon: Icons.view_stream,size: 50,info: "Used on direction signs to indicate a place"),
+  const Choice(title: "Delineator Post",icon: Icons.wb_iridescent,size: 50,info: "Used on direction signs to indicate a place"),
+
+];
 
 const List<Choice> menuItems_choices = const <Choice>[
   const Choice(title: 'logo', icon: Icons.directions_car,size: 15),
