@@ -148,7 +148,7 @@ class _MyTabbedPageState extends State<MyTabbedPage>
       ,Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,),
 
   ];
-  String _title = "MotorCar";
+  String _title = "Licens";
 
   void setTitle(String _title) {
     this._title = _title;
@@ -161,14 +161,15 @@ class _MyTabbedPageState extends State<MyTabbedPage>
   TabController _tabControllerSigns;
 
  Widget trafficItems(var choice){
-      Symbols().execImg();
+
       return new ListTile(onTap: (){
       setState(() {
 
       _wizard = new Container(child: new ListView.builder(itemBuilder:(context, index) {
 
         final _suggestion=<Symbols>[_symbols[index]];
-         return _roadSigns(_suggestion[0]);
+
+         return _roadSigns(_suggestion[0],"road/roadsigns/asset 1.png");
       },itemCount: _symbols.length,),);
 
       });
@@ -183,19 +184,20 @@ class _MyTabbedPageState extends State<MyTabbedPage>
 
 
   }
-  Widget _roadSigns(Symbols symbols){
-
+  Widget _roadSigns(Symbols symbols,String icon){
+    List x=[20];
     return new ListTile(onTap: (){
       setState(() {
 
         _wizard = new Container(child: new ListView.builder(itemBuilder:(context, index) {
           final _suggestion=<Symbols>[_symbols[index]];
-          return _roadSigns(_suggestion[0]);
+
+          return _roadSigns(_suggestion[0],"road/roadsigns/asset 1.png");
         },itemCount: _symbols.length,),);
       });
 
 
-    },leading: Image(image:symbols.icon.image,),isThreeLine: true,
+    },leading: Image(image:Image.asset(icon).image,),isThreeLine: true,
         subtitle: Text(symbols.info,style: TextStyle(color: Colors.blueGrey),),title: Text(
           symbols.title,
           style: _biggerFont,
@@ -219,8 +221,14 @@ class _MyTabbedPageState extends State<MyTabbedPage>
     );
   }
 
+  List<AssetImage> x=<AssetImage>[
+    
+  ];
+  
   @override
   void dispose() {
+
+
     _tabController.dispose();
     super.dispose();
   }
@@ -288,34 +296,19 @@ class Symbols {
   const Symbols({this.title, this.icon,this.size,this.info});
   final double size;
   final String title,info;
-  final Image icon;
+  final String icon;
 
 
-  execImg(){
+}
 
-    for(int x=0;x<30;x++) {
-
-      _symbols = const <Symbols>[
+      List <Symbols> _symbols = const <Symbols>[
         const Symbols(title: "Warning Signs",
-            icon: Image(image: AssetImage("road/roadsigns/asset 1.png"),
-              color: null,
-              width: 10,
-              height: 10,),
-            size: 50,
+            icon:"road/roadsigns/asset 0.png",
             info: "Warning signs are erected to warn road users of hazard"),
-        const Symbols(title: "Give Way Signs",
-            icon: Image(image: AssetImage("road/roadsigns/asset 1.png"),
-              color: null,
-              width: 10,
-              height: 10,),
-            size: 50,
-            info: "Give way signs are erected to warn road users of hazard"),
 
       ];
-    }
-  }
-}
- List<Symbols> _symbols=<Symbols>[];
+
+
 
 
 const List<Choice> traffic_sign = const <Choice>[
