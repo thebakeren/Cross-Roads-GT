@@ -135,7 +135,7 @@ class _MyTabbedPageState extends State<MyTabbedPage>
     with TickerProviderStateMixin {
 
   var _wizard;
-  final _biggerFont= const TextStyle(fontSize: 14.99,fontWeight: FontWeight.bold,color: Colors.blue);
+  final _biggerFont= const TextStyle(fontSize: 14.99,fontWeight: FontWeight.bold,color: Colors.blueGrey);
 
   final List<Tab> _tabsBottom = <Tab>[
     Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,),
@@ -148,7 +148,7 @@ class _MyTabbedPageState extends State<MyTabbedPage>
       ,Tab( icon: Icon(tab_choices[2].icon),text: tab_choices[2].title,),
 
   ];
-  String _title = "Cross Roads";
+  String _title = "MotorCar";
 
   void setTitle(String _title) {
     this._title = _title;
@@ -234,14 +234,14 @@ class _MyTabbedPageState extends State<MyTabbedPage>
       MaterialApp(
       home: new Scaffold(
       appBar: new AppBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.teal,
         actions: <Widget>[
-          PopupMenuButton<Choice>( icon: Icon(Icons.menu),
+          PopupMenuButton<Choice>( icon: Icon(Icons.menu,color: Colors.white,),
             onSelected:null,
             itemBuilder:(BuildContext context) {
               return menuItems_choices.skip(2).map((e) =>
                   PopupMenuItem<Choice>(child:Text(e.title),)).toList();
-            },
+            },color: Colors.white,
           )
         ],
         title: Text(_title),
@@ -249,12 +249,13 @@ class _MyTabbedPageState extends State<MyTabbedPage>
         bottom:new TabBar(
 
           controller: _tabController,
-          tabs: _tabs,labelColor: Colors.amber,indicatorSize:TabBarIndicatorSize.tab,
+          tabs: _tabs,labelColor: Colors.white,indicatorSize:TabBarIndicatorSize.tab,
             labelStyle: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white),onTap: (value) {
           setState(() {
 
 
             _wizard=new TabBarView(
+
               controller: _tabController,
               children: <Widget>[new ListView.builder(itemBuilder:(context, index) {
                 final _suggestion=<Choice>[traffic_sign[index]];
@@ -293,10 +294,10 @@ class Symbols {
   execImg(){
 
     for(int x=0;x<30;x++) {
-      const url=AssetImage("road/roadsigns/asset $x.png");
+
       _symbols = const <Symbols>[
         const Symbols(title: "Warning Signs",
-            icon: Image(image:url,
+            icon: Image(image: AssetImage("road/roadsigns/asset 1.png"),
               color: null,
               width: 10,
               height: 10,),
